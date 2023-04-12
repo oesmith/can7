@@ -1,0 +1,260 @@
+# Config for a 2021 Caterham Academy car with a Sigma 1.6 125 engine.
+#
+# ECU serial: 959bd804.
+#
+- id: RT_ENGINESPEED
+  name: Engine speed
+  desc: Engine speed in rpm as measured by the crankshaft sensor
+  page: 0xf8
+  addr: [0x7d, 0x7c]
+  scale:
+    units: rpm
+    scale_min: 0.0
+    scale_max: 65535.0
+    display_min: 0.0
+    display_max: 10000.0
+    precision: 0
+- id: RT_THROTTLEANGLE1(LIM)
+  name: Throttle angle 1
+  desc: The voltage measured from the primary throttle pot after being limit checked
+  page: 0xf8
+  addr: [0x61, 0x60]
+  scale:
+    units: V
+    scale_min: 0.0
+    scale_max: 5.0
+    display_min: 0.0
+    display_max: 5.0
+    precision: 2
+- id: RT_THROTTLESITE1
+  name: Throttle site 1
+  desc: The index of the primary throttle pot
+  page: 0xf8
+  addr: [0x64]
+  scale:
+    units: site
+    scale_min: 0.0
+    scale_max: 16.0
+    display_min: 0.0
+    display_max: 16.0
+    precision: 1
+- id: RT_COOLANTTEMP1(LIM)
+  name: Coolant temp
+  desc: Coolant temperature sensor reading after calibration and limit-checks
+  page: 0xf8
+  addr: [0x45, 0x44]
+  scale:
+    units: °C
+    scale_min: -30.0
+    scale_max: 130.0
+    display_min: -30.0
+    display_max: 130.0
+    precision: 0
+- id: RT_AIRTEMP1(LIM)
+  name: Air temp
+  desc: Air temperature sensor reading after calibration and limit-checks
+  page: 0xf8
+  addr: [0x37, 0x36]
+  scale:
+    units: °C
+    scale_min: -30.0
+    scale_max: 130.0
+    display_min: -30.0
+    display_max: 130.0
+    precision: 0
+- id: RT_BAROSCALEDLIM
+  name: Baro pressure
+  desc: Ambient pressure sensor reading after calibration and limit-checks
+  page: 0xf8
+  addr: [0x6b, 0x6a]
+  scale:
+    units: bar
+    scale_min: -1.0
+    scale_max: 5.5535
+    display_min: -1.0
+    display_max: 5.5535
+    precision: 3
+- id: RT_BATTERYVOLTAGE(LIM)
+  name: Battery voltage
+  desc: Supply voltage to the ECU after limit-checks
+  page: 0xf8
+  addr: [0x9f, 0x9e]
+  scale:
+    units: V
+    scale_min: 0.0
+    scale_max: 20.0
+    display_min: 0.0
+    display_max: 20.0
+    precision: 1
+- id: RT_CAMSIGNALLEVEL
+  name: Cam signal level
+  desc: Shows whether voltage on the cam input pin is currently high or low
+  page: 0xfd
+  addr: [0x21]
+  bits:
+    0x0: Low
+    0x80: High
+- id: RT_CAMSIGNALSTATUS
+  name: Cam signal status
+  desc: Shows whether the ECU has a valid cam signal or not
+  page: 0xfd
+  addr: [0x21]
+  bits:
+    0x0: Invalid
+    0x2: Valid
+- id: RT_CAM1PHASE
+  name: Cam 1 phase
+  desc: Degrees of crank between TDC no1 and the first edge on the camshaft
+  page: 0xd1
+  addr: [0xcd, 0xcc]
+  scale:
+    units: °
+    scale_min: 0.0
+    scale_max: 720.0
+    display_min: 0.0
+    display_max: 720.0
+    precision: 1
+- id: RT_VARCAM1TARGET
+  name: Var cam 1 target
+  desc: Cam position that the ECU is trying to attain
+  page: 0xd1
+  addr: [0xe3, 0xe2]
+  scale:
+    units: °
+    scale_min: 0.0
+    scale_max: 720.0
+    display_min: 0.0
+    display_max: 720.0
+    precision: 1
+- id: RT_CAM2PHASE
+  name: Cam 2 phase
+  desc: Degrees of crank between the trigger tooth on the crankshaft and the next edge on the camshaft
+  page: 0xd1
+  addr: [0xc3, 0xc2]
+  scale:
+    units: °
+    scale_min: 0.0
+    scale_max: 720.0
+    display_min: 0.0
+    display_max: 720.0
+    precision: 1
+- id: RT_VARCAM2TARGET
+  name: Var cam 2 target
+  desc: Cam position that the ECU is trying to attain
+  page: 0xd1
+  addr: [0x63, 0x62]
+  scale:
+    units: °
+    scale_min: 0.0
+    scale_max: 720.0
+    display_min: 0.0
+    display_max: 720.0
+    precision: 1
+- id: RT_DIRECTRADFANENABLE
+  name: Direct rad fan enable
+  desc: Whether the direct rad fan drive is enabled
+  page: 0xfd
+  addr: [0x42]
+  bits:
+    0x0: Off
+    0x2: On
+- id: RT_CURRENTLAMBDAA
+  name: Lambda A
+  desc: Measurement of lambda from channel A
+  page: 0xf8
+  addr: [0xa5, 0xa4]
+  scale:
+    units: lam
+    scale_min: 0.0
+    scale_max: 2.56
+    display_min: 0.0
+    display_max: 2.75
+    precision: 3
+- id: RT_LAMBDASTATUS(A)
+  name: Lambda status A
+  desc: Whether closed loop lambda control is enabled on channel A, or the reason why not
+  page: 0xfd
+  addr: [0x35, 0x34]
+  bits:
+    0x0: All Conditions OK
+    0x1: Bad AFR Reading
+    0x2: Coolant Temp too low
+    0x4: Waiting for timer
+    0x8: Disabled by Target Map
+    0x10: No Sensor Type Selected
+    0x20: Control disabled by user
+    0x40: Sensor too Hot (Ri)
+    0x80: Sensor too cold (Ri)
+    0x400: Doing Fuel Cut
+- id: RT_WARMUPTIMER
+  name: Warm up timer
+  desc: Counts down until the engine is warm and lambda control is enabled
+  page: 0xf9
+  addr: [0xd7, 0xd6]
+  scale:
+    units: s
+    scale_min: 0.0
+    scale_max: 6881.0
+    display_min: 0.0
+    display_max: 7000.0
+    precision: 1
+- id: RT_IDLESPEED_STATUS
+  name: Idle speed status
+  desc: Reports whether idle speed control is active, or the reason why not
+  page: 0xfd
+  addr: [0x45]
+  bits:
+    0x0: Active
+    0x1: Disabled by User
+    0x2: Throttle Pedal too High
+    0x4: Engine Speed Too High
+    0x8: Road Speed Too High
+    0x10: Waiting for Timer
+    0x20: Throttle Position Too High
+    0x40: After Start
+    0x80: In Cranking
+- id: RT_ENGINESYNCHSTATUS
+  name: Engine synch status
+  desc: Shows whether the ECU has synchronised to the engine and whether the ECU had to adjust
+  page: 0xfd
+  addr: [0x73]
+  bits:
+    0x0: Not Synched Yet
+    0x1: Synched
+    0x3: Synched
+- id: RT_SOFTCUTTIME
+  name: Soft cut
+  desc: ECU soft cut threshold
+  page: 0xf9
+  addr: [0xbb, 0xba]
+  scale:
+    units: rpm
+    scale_min: 0.0
+    scale_max: 65535.0
+    display_min: 0.0
+    display_max: 10000.0
+    precision: 0
+- id: RT_HARDCUTTIME
+  name: Hard cut
+  desc: ECU hard cut threshold
+  page: 0xf9
+  addr: [0xbd, 0xbc]
+  scale:
+    units: rpm
+    scale_min: 0.0
+    scale_max: 65535.0
+    display_min: 0.0
+    display_max: 10000.0
+    precision: 0
+- id: RT_ENGINERUNTIME
+  name: Engine run time
+  desc: Engine run time
+  page: 0xe2
+  addr: [0xcf, 0xce, 0xcd, 0xcc]
+  scale:
+    units: hours
+    scale_min: 0x0
+    scale_max: 1193046.5
+    display_min: 0x0
+    display_max: 1193046.5
+    precision: 1
