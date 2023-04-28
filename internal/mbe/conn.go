@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"time"
 
 	"go.einride.tech/can"
 	"go.einride.tech/can/pkg/socketcan"
@@ -12,30 +13,49 @@ import (
 type Conn interface {
 	Close() error
 	Recv() (msg []byte, err error)
+	Reopen() (error, Conn)
 	Send(msg []byte) error
+	SetTimeout(t time.Duration)
 }
 
 type connImpl struct {
+	dev   string
+	rx_id uint32     // Identity to receive CAN frames from.
+	tx_id uint32     // Identity to send CAN frames as.
 	con   net.Conn
 	rx    *socketcan.Receiver
 	tx    *socketcan.Transmitter
-	rx_id uint32     // Identity to receive CAN frames from.
-	tx_id uint32     // Identity to send CAN frames as.
 }
 
 func NewConn(dev string, rx_id uint32, tx_id uint32) (Conn, error) {
-	con, err := socketcan.DialContext(context.Background(), "can", dev)
-	if err != nil {
-		return nil, fmt.Errorf("Failed to open can device: %s\n", err)
-	}
 	c := connImpl{
-		con:   con,
-		rx:    socketcan.NewReceiver(con),
-		tx:    socketcan.NewTransmitter(con),
+		dev: dev,
 		rx_id: rx_id,
 		tx_id: tx_id,
 	}
+	if err := c.open(); err != nil {
+		return nil, err
+	}
 	return c, nil
+}
+
+func (c *connImpl) open() error {
+	con, err := socketcan.DialContext(context.Background(), "can", c.dev)
+	if err != nil {
+		return fmt.Errorf("Failed to open can device: %s\n", err)
+	}
+	c.con = con
+	c.rx = socketcan.NewReceiver(con)
+	c.tx = socketcan.NewTransmitter(con)
+	return nil
+}
+
+func (c connImpl) Reopen() (error, Conn) {
+	c.Close()
+	if err := c.open(); err != nil {
+		return err, nil
+	}
+	return nil, c
 }
 
 func (c connImpl) Close() error {
@@ -109,4 +129,8 @@ func (c connImpl) Send(msg []byte) error {
 		idx += 1
 	}
 	return nil
+}
+
+func (c connImpl) SetTimeout(t time.Duration) {
+	c.con.SetDeadline(time.Now().Add(t))
 }
