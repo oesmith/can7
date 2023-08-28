@@ -246,15 +246,16 @@
     display_min: 0.0
     display_max: 10000.0
     precision: 0
-- id: RT_ENGINERUNTIME
-  name: Engine run time
-  desc: Engine run time
-  page: 0xe2
-  addr: [0xcf, 0xce, 0xcd, 0xcc]
-  scale:
-    units: hours
-    scale_min: 0x0
-    scale_max: 1193046.5
-    display_min: 0x0
-    display_max: 1193046.5
-    precision: 1
+# I'm not sure about this one.
+# - id: RT_ENGINERUNTIME
+#   name: Engine run time
+#   desc: Engine run time
+#   page: 0xe2
+#   addr: [0xcf, 0xce, 0xcd, 0xcc]
+#   scale:
+#     units: hours
+#     scale_min: 0x0
+#     scale_max: 1193046.5
+#     display_min: 0x0
+#     display_max: 1193046.5
+#     precision: 1
